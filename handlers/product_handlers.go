@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"gin-api/db"
 	"gin-api/models"
 	"net/http"
@@ -24,6 +25,7 @@ func CreateProduct(w http.ResponseWriter, r *http.Request) {
 
         w.WriteHeader(http.StatusCreated)
         json.NewEncoder(w).Encode(p)
+		
 }
 
 func GetProduct(w http.ResponseWriter, r *http.Request) {
@@ -41,6 +43,7 @@ func GetProduct(w http.ResponseWriter, r *http.Request) {
         }
 
         json.NewEncoder(w).Encode(product)
+		
 }
 
 func GetAllProducts(w http.ResponseWriter, r *http.Request) {
@@ -51,6 +54,7 @@ func GetAllProducts(w http.ResponseWriter, r *http.Request) {
         }
 
         json.NewEncoder(w).Encode(products)
+		fmt.Println(products)
 }
 
 func UpdateProduct(w http.ResponseWriter, r *http.Request) {

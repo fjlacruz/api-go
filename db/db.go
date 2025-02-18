@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"time"
 
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
@@ -12,45 +13,39 @@ import (
 
 var DB *sql.DB
 
-// ConnectDB establece la conexión con la base de datos.
 func ConnectDB() {
-	// Cargar las variables de entorno desde el archivo .env
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error cargando el archivo .env")
-	}
+	_ = godotenv.Load() // No falla si no encuentra .env
 
-	// Verificación de que las variables de entorno se han cargado
-	log.Println("Verificando las variables de entorno...")
-
-	// Obtener las variables de entorno necesarias
 	dbUser := os.Getenv("DB_USER")
 	dbPassword := os.Getenv("DB_PASSWORD")
 	dbHost := os.Getenv("DB_HOST")
 	dbPort := os.Getenv("DB_PORT")
 	dbName := os.Getenv("DB_NAME")
 
-	// Comprobar si las variables de entorno están vacías
 	if dbUser == "" || dbPassword == "" || dbHost == "" || dbPort == "" || dbName == "" {
 		log.Fatal("Faltan variables de entorno necesarias")
 	}
 
-
-	// Construir la cadena de conexión usando las variables de entorno
-	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=require", 
-		dbUser, dbPassword, dbHost, dbPort, dbName)
-
-	// Intentar abrir la conexión
-	DB, err = sql.Open("postgres", connStr)
-	if err != nil {
-		log.Fatal("Error al abrir la conexión:", err)
+	// Detectar si la app está corriendo en Docker
+	if os.Getenv("IN_DOCKER") != "true" {
+		dbHost = "localhost" // Conexión desde fuera de Docker
 	}
 
-	// Intentar hacer ping a la base de datos
-	if err = DB.Ping(); err != nil {
-		log.Fatal("Error al hacer ping a la base de datos:", err)
+	connStr := fmt.Sprintf(
+		"postgres://%s:%s@%s:%s/%s?sslmode=disable&connect_timeout=5",
+		dbUser, dbPassword, dbHost, dbPort, dbName,
+	)
+
+	var err error
+	for i := 0; i < 5; i++ {
+		DB, err = sql.Open("postgres", connStr)
+		if err == nil && DB.Ping() == nil {
+			log.Println("✅ Conexión exitosa a la base de datos")
+			return
+		}
+		log.Printf("Intento %d: Error al conectar con la base de datos: %v", i+1, err)
+		time.Sleep(3 * time.Second)
 	}
 
-	// Imprimir mensaje si la conexión es exitosa
-	fmt.Println("Conexión a la base de datos establecida.")
+	log.Fatal("❌ No se pudo establecer conexión con la base de datos después de varios intentos")
 }

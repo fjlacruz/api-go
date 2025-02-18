@@ -7,7 +7,25 @@ require (
 	github.com/lib/pq v1.10.9
 )
 
-require github.com/gorilla/mux v1.8.1 // indirect
+require (
+	dario.cat/mergo v1.0.1 // indirect
+	github.com/air-verse/air v1.61.7 // indirect
+	github.com/bep/godartsass v1.2.0 // indirect
+	github.com/bep/godartsass/v2 v2.1.0 // indirect
+	github.com/bep/golibsass v1.2.0 // indirect
+	github.com/cli/safeexec v1.0.1 // indirect
+	github.com/creack/pty v1.1.23 // indirect
+	github.com/fatih/color v1.17.0 // indirect
+	github.com/fsnotify/fsnotify v1.7.0 // indirect
+	github.com/gobwas/glob v0.2.3 // indirect
+	github.com/gohugoio/hugo v0.134.3 // indirect
+	github.com/gorilla/mux v1.8.1 // indirect
+	github.com/mattn/go-colorable v0.1.13 // indirect
+	github.com/pelletier/go-toml v1.9.5 // indirect
+	github.com/spf13/afero v1.11.0 // indirect
+	github.com/spf13/cast v1.7.0 // indirect
+	github.com/tdewolff/parse/v2 v2.7.15 // indirect
+)
 
 require (
 	github.com/bytedance/sonic v1.12.8 // indirect

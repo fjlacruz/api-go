@@ -18,3 +18,18 @@ gin-app/
     └── product.go
 
 ```
+
+build docker-compose (contain image api and db)
+
+```bash
+ docker-compose up -d
+ ```
+
+ Data bse in PgAdmin 
+ ```bash
+ http://localhost:5050
+
+ us=admin@example.com
+ pas=admin
+
+ ```

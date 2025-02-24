@@ -25,7 +25,7 @@ build docker-compose (contain image api and db)
  docker-compose up -d
  ```
 
- Data bse in PgAdmin 
+ Data base in PgAdmin 
  ```bash
  http://localhost:5050
 
